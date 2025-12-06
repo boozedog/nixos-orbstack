@@ -21,10 +21,10 @@
     #   url = "github:hercules-ci/flake-parts";
     #   inputs.nixpkgs-lib.follows = "nixpkgs";
     # };
-    # home-manager = {
-    #   url = "github:nix-community/home-manager";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # nix-darwin = {
     #   url = "github:LnL7/nix-darwin";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -47,6 +47,7 @@
       agenix,
       dev-tools,
       vscode-server,
+      home-manager,
       ...
     }:
     let
@@ -55,27 +56,14 @@
         srvos.nixosModules.mixins-terminfo
         agenix.nixosModules.default
         vscode-server.nixosModules.default
-        # home-manager.nixosModules.home-manager
-        # {
-        #   home-manager.useGlobalPkgs = true;
-        #   home-manager.useUserPackages = true;
-        #   home-manager.users.david = { ... }: {
-        #     imports = [
-        #       nixvim.homeManagerModules.nixvim
-        #       ../home-manager/david.nix
-        #       ../home-manager/common.nix
-        #       #../home-manager/nixvim.nix
-        #       ../home-manager/server.nix
-        #       ../home-manager/starship.nix
-        #     ];
-        #   };
-        # }
-        #../common/common.nix
-        #../modules/atuin.nix
-        #../modules/hosts.nix
-        #../modules/netdata.nix
-        #../modules/tailscale.nix
-        #../modules/zerotier.nix
+        home-manager.nixosModules.home-manager
+        {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            users.david = import ./home.nix;
+          };
+        }
       ];
     in
     {
@@ -94,6 +82,12 @@
             #../weatherspork
           ];
         };
+      };
+
+      # Standalone home-manager configuration
+      homeConfigurations.david = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-linux;
+        modules = [ ./home.nix ];
       };
 
       # Development shell with formatting, linting, LSP

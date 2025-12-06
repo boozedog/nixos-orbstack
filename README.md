@@ -4,15 +4,15 @@
 
 ```sh
 ssh orb
-cd /Users/david/projects/nixos/orbstack/
+cd ~/projects/nixos/orbstack/
 nix flake update
 ```
 
 ## build (flake)
 
 ```sh
-sudo nixos-rebuild test --use-substitutes --flake /Users/david/projects/nixos/orbstack
-sudo nixos-rebuild switch --no-reexec --use-substitutes --flake /Users/david/projects/nixos/orbstack
+sudo nixos-rebuild test --use-substitutes --flake .
+sudo nixos-rebuild switch --no-reexec --use-substitutes --flake .
 ```
 
 ## build (non-flake)
