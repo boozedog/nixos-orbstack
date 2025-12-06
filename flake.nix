@@ -92,6 +92,7 @@
             #../modules/matomo.nix
             #../modules/nftables.nix
             #../modules/supabase-cli.nix
+            modules/tailscale.nix
             #../weatherspork
           ];
         };
