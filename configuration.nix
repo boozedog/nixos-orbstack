@@ -41,7 +41,6 @@
     gh
     nixd
     nixfmt-rfc-style
-    supabase-cli
   ];
 
   # VSCode Server support for Remote SSH
