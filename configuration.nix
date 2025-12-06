@@ -2,7 +2,11 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running 'nixos-help').
 
-{ modulesPath, pkgs, ... }:
+{
+  modulesPath,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
@@ -34,8 +38,10 @@
 
   # System packages
   environment.systemPackages = with pkgs; [
+    gh
     nixd
     nixfmt-rfc-style
+    supabase-cli
   ];
 
   # VSCode Server support for Remote SSH
