@@ -11,7 +11,7 @@ nix flake update
 ## build (flake)
 
 ```sh
-sudo nixos-rebuild test --use-substitutes --flake .
+nix flake check
 sudo nixos-rebuild switch --no-reexec --use-substitutes --flake .
 ```
 

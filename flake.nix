@@ -22,7 +22,11 @@
     #   inputs.nixpkgs-lib.follows = "nixpkgs";
     # };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    home-manager-config = {
+      url = "github:boozedog/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # nix-darwin = {
@@ -48,6 +52,7 @@
       dev-tools,
       vscode-server,
       home-manager,
+      home-manager-config,
       ...
     }:
     let
@@ -61,7 +66,15 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.david = import ./home.nix;
+            users.david = {
+              imports = home-manager-config.homeModuleList ++ [
+                home-manager-config.nixvimModule
+                ./home.nix
+              ];
+            };
+            extraSpecialArgs = {
+              username = "david";
+            };
           };
         }
       ];
@@ -87,7 +100,13 @@
       # Standalone home-manager configuration
       homeConfigurations.david = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.aarch64-linux;
-        modules = [ ./home.nix ];
+        modules = home-manager-config.homeModuleList ++ [
+          home-manager-config.nixvimModule
+          ./home.nix
+        ];
+        extraSpecialArgs = {
+          username = "david";
+        };
       };
 
       # Development shell with formatting, linting, LSP
