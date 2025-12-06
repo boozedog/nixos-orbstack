@@ -34,3 +34,6 @@ $RECYCLE.BIN/
 *~
 .idea/
 *.sublime-*
+
+# Claude Code
+.claude
