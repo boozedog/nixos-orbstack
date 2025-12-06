@@ -3,6 +3,11 @@
     srvos.url = "github:numtide/srvos";
     nixpkgs.follows = "srvos/nixpkgs";
 
+    dev-tools = {
+      url = "github:boozedog/nix-dev-tools";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     agenix.url = "github:ryantm/agenix";
     # disko = {
     #   url = "github:nix-community/disko";
@@ -20,11 +25,6 @@
     #   url = "github:LnL7/nix-darwin";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
-    # nix-formatter-pack.url = "github:Gerschtli/nix-formatter-pack";
-    nix-index-database = {
-      url = "github:Mic92/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     # nixvim = {
     #   url = "github:nix-community/nixvim";
@@ -35,7 +35,15 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
   };
-  outputs = inputs @ { self, nixpkgs, srvos, agenix, ... }:
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      srvos,
+      agenix,
+      dev-tools,
+      ...
+    }:
     let
       serverModules = [
         srvos.nixosModules.server
@@ -69,19 +77,34 @@
         orbstack = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
           specialArgs = { inherit inputs self; };
-          modules =
-            serverModules
-            ++ [
-              ./configuration.nix
-              #disko.nixosModules.disko
-              #../modules/docker.nix
-              #../modules/k3s.nix
-              #../modules/matomo.nix
-              #../modules/nftables.nix
-              #../modules/supabase-cli.nix
-              #../weatherspork
-            ];
+          modules = serverModules ++ [
+            ./configuration.nix
+            #disko.nixosModules.disko
+            #../modules/docker.nix
+            #../modules/k3s.nix
+            #../modules/matomo.nix
+            #../modules/nftables.nix
+            #../modules/supabase-cli.nix
+            #../weatherspork
+          ];
         };
       };
+
+      # Development shell with formatting, linting, LSP
+      devShells.aarch64-linux.default = dev-tools.lib.mkDevShell {
+        system = "aarch64-linux";
+        src = ./.;
+        statixIgnore = [ "orbstack.nix" ];
+      };
+
+      devShells.aarch64-darwin.default = dev-tools.lib.mkDevShell {
+        system = "aarch64-darwin";
+        src = ./.;
+        statixIgnore = [ "orbstack.nix" ];
+      };
+
+      # Formatter
+      formatter.aarch64-linux = dev-tools.lib.mkFormatter "aarch64-linux";
+      formatter.aarch64-darwin = dev-tools.lib.mkFormatter "aarch64-darwin";
     };
 }
