@@ -9,6 +9,10 @@
     };
 
     agenix.url = "github:ryantm/agenix";
+    vscode-server = {
+      url = "github:nix-community/nixos-vscode-server";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # disko = {
     #   url = "github:nix-community/disko";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -42,6 +46,7 @@
       srvos,
       agenix,
       dev-tools,
+      vscode-server,
       ...
     }:
     let
@@ -49,6 +54,7 @@
         srvos.nixosModules.server
         srvos.nixosModules.mixins-terminfo
         agenix.nixosModules.default
+        vscode-server.nixosModules.default
         # home-manager.nixosModules.home-manager
         # {
         #   home-manager.useGlobalPkgs = true;
@@ -68,7 +74,7 @@
         #../modules/atuin.nix
         #../modules/hosts.nix
         #../modules/netdata.nix
-        ../modules/tailscale.nix
+        #../modules/tailscale.nix
         #../modules/zerotier.nix
       ];
     in

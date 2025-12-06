@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(nix flake update:*)",
+      "Bash(nix develop:*)",
+      "Bash(cat:*)",
+      "Bash(git -C /Users/david/projects/nixos-orbstack log --oneline -10)",
+      "Bash(git -C /Users/david/projects/nixos-orbstack status)",
+      "Bash(git -C /Users/david/projects/nixos-orbstack diff --no-index --name-only HEAD)",
+      "Bash(git -C /Users/david/projects/nixos-orbstack log --all --oneline)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

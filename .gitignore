@@ -33,5 +33,4 @@ $RECYCLE.BIN/
 *.swo
 *~
 .idea/
-.vscode/
 *.sublime-*
