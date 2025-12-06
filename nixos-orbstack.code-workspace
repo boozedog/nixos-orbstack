@@ -11,9 +11,33 @@
     },
     "nix.enableLanguageServer": true,
     "nix.serverPath": "nixd",
+    "nix.serverSettings": {
+      "nixd": {
+        "eval": {
+          "depth": 0,
+          "workers": 3,
+          "target": {
+            "args": [
+              "--impure"
+            ],
+            "installable": ".#nixosConfigurations.orbstack.config.system.build.toplevel"
+          }
+        },
+        "formatting": {
+          "command": [
+            "nixfmt"
+          ]
+        },
+        "options": {
+          "nixos": {
+            "expr": "(builtins.getFlake (toString ./.)).nixosConfigurations.orbstack.options"
+          }
+        }
+      }
+    },
     "nix.formatterPath": [
-      "alejandra",
-      "--quiet"
+      "nix",
+      "fmt"
     ]
   }
 }

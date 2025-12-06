@@ -1,8 +1,8 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+# and in the NixOS manual (accessible by running 'nixos-help').
 
-{ modulesPath, ... }:
+{ modulesPath, pkgs, ... }:
 
 {
   imports = [
@@ -31,6 +31,12 @@
   };
 
   security.sudo.wheelNeedsPassword = false;
+
+  # System packages
+  environment.systemPackages = with pkgs; [
+    nixd
+    nixfmt-rfc-style
+  ];
 
   # VSCode Server support for Remote SSH
   services.vscode-server.enable = true;

@@ -1,7 +1,9 @@
 {
   "eval": {
+    "depth": 0,
+    "workers": 3,
     "target": {
-      "args": [],
+      "args": ["--impure"],
       "installable": ".#nixosConfigurations.orbstack.config.system.build.toplevel"
     }
   },
