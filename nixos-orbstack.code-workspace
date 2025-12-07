@@ -37,6 +37,14 @@
           }
         }
       }
+    },
+    "triggerTaskOnSave.tasks": {
+      "deadnix": [
+        "*.nix"
+      ],
+      "statix": [
+        "*.nix"
+      ]
     }
   }
 }

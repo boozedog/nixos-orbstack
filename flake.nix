@@ -100,9 +100,5 @@
         system = "aarch64-darwin";
         src = ./.;
       };
-
-      # Formatter
-      formatter.aarch64-linux = dev-tools.lib.mkFormatter "aarch64-linux";
-      formatter.aarch64-darwin = dev-tools.lib.mkFormatter "aarch64-darwin";
     };
 }
