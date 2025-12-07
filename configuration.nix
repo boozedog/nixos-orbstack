@@ -40,6 +40,9 @@
   environment.systemPackages = with pkgs; [
     gh
     nixd
+    deadnix
+    statix
+    nixfmt
   ];
 
   # VSCode Server support for Remote SSH
