@@ -13,14 +13,6 @@
       url = "github:nix-community/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # disko = {
-    #   url = "github:nix-community/disko";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-    # flake-parts = {
-    #   url = "github:hercules-ci/flake-parts";
-    #   inputs.nixpkgs-lib.follows = "nixpkgs";
-    # };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,19 +21,7 @@
       url = "github:boozedog/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # nix-darwin = {
-    #   url = "github:LnL7/nix-darwin";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-    # nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    # nixvim = {
-    #   url = "github:nix-community/nixvim";
-    #   inputs.nixpkgs.follows = "srvos/nixpkgs";
-    # };
-    # treefmt-nix = {
-    #   url = "github:numtide/treefmt-nix";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+
   };
   outputs =
     inputs@{

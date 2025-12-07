@@ -13,6 +13,9 @@
     "nix.serverPath": "nixd",
     "nix.serverSettings": {
       "nixd": {
+        "diagnostic": {
+          "enable": true
+        },
         "eval": {
           "depth": 0,
           "workers": 3,
