@@ -39,6 +39,7 @@
   # System packages
   environment.systemPackages = with pkgs; [
     gh
+    devenv
     # nixd
     # deadnix
     # statix

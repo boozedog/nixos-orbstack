@@ -3,12 +3,12 @@
     srvos.url = "github:numtide/srvos";
     nixpkgs.follows = "srvos/nixpkgs";
 
-    dev-tools = {
-      url = "github:boozedog/nix-dev-tools";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # dev-tools = {
+    #   url = "github:boozedog/nix-dev-tools";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
-    agenix.url = "github:ryantm/agenix";
+    #agenix.url = "github:ryantm/agenix";
     vscode-server = {
       url = "github:nix-community/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -28,8 +28,8 @@
       self,
       nixpkgs,
       srvos,
-      agenix,
-      dev-tools,
+      #agenix,
+      #dev-tools,
       vscode-server,
       home-manager,
       home-manager-config,
@@ -39,7 +39,7 @@
       serverModules = [
         srvos.nixosModules.server
         srvos.nixosModules.mixins-terminfo
-        agenix.nixosModules.default
+        #agenix.nixosModules.default
         vscode-server.nixosModules.default
         home-manager.nixosModules.home-manager
         {
@@ -90,15 +90,15 @@
         };
       };
 
-      # Development shell with formatting, linting, LSP
-      devShells.aarch64-linux.default = dev-tools.lib.mkDevShell {
-        system = "aarch64-linux";
-        src = ./.;
-      };
+      # # Development shell with formatting, linting, LSP
+      # devShells.aarch64-linux.default = dev-tools.lib.mkDevShell {
+      #   system = "aarch64-linux";
+      #   src = ./.;
+      # };
 
-      devShells.aarch64-darwin.default = dev-tools.lib.mkDevShell {
-        system = "aarch64-darwin";
-        src = ./.;
-      };
+      # devShells.aarch64-darwin.default = dev-tools.lib.mkDevShell {
+      #   system = "aarch64-darwin";
+      #   src = ./.;
+      # };
     };
 }

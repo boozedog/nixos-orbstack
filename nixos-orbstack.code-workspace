@@ -46,5 +46,15 @@
         "*.nix"
       ]
     }
+  },
+  "extensions": {
+    "recommendations": [
+      "mkhl.direnv",
+      "jnoortheen.nix-ide",
+      "gruntfuggly.triggertaskonsave",
+      "editorconfig.editorconfig",
+      "usernamehw.errorlens",
+      "davidanson.vscode-markdownlint"
+    ]
   }
 }

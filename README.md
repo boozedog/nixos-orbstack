@@ -30,3 +30,5 @@ nix-shell -p git
 cd /Users/david/projects/nixos/orbstack/
 nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes
 ```
+
+<!-- markdownlint-disable-file MD013 -->

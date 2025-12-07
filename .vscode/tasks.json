@@ -38,7 +38,7 @@
       "type": "shell",
       "command": "deadnix",
       "args": [
-        "--output-format=parseable"
+        "--output-format=human-readable"
       ],
       "problemMatcher": {
         "owner": "deadnix",
