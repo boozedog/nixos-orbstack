@@ -114,13 +114,11 @@
       devShells.aarch64-linux.default = dev-tools.lib.mkDevShell {
         system = "aarch64-linux";
         src = ./.;
-        statixIgnore = [ "orbstack.nix" ];
       };
 
       devShells.aarch64-darwin.default = dev-tools.lib.mkDevShell {
         system = "aarch64-darwin";
         src = ./.;
-        statixIgnore = [ "orbstack.nix" ];
       };
 
       # Formatter
