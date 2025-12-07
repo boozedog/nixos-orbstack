@@ -6,8 +6,6 @@
 
   # https://devenv.sh/packages/
   packages = with pkgs; [
-    #git
-    markdownlint-cli2
     nixd
   ];
 
