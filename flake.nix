@@ -8,7 +8,7 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
 
-    #agenix.url = "github:ryantm/agenix";
+    agenix.url = "github:ryantm/agenix";
     vscode-server = {
       url = "github:nix-community/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -21,14 +21,13 @@
       url = "github:boozedog/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
   };
   outputs =
     inputs@{
       self,
       nixpkgs,
       srvos,
-      #agenix,
+      agenix,
       #dev-tools,
       vscode-server,
       home-manager,
@@ -36,10 +35,20 @@
       ...
     }:
     let
+      system = "aarch64-linux";
+
+      pkgs = import inputs.nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+
+      # Local packages
+      claude-code = pkgs.callPackage ./packages/claude-code.nix { };
+
       serverModules = [
         srvos.nixosModules.server
         srvos.nixosModules.mixins-terminfo
-        #agenix.nixosModules.default
+        agenix.nixosModules.default
         vscode-server.nixosModules.default
         home-manager.nixosModules.home-manager
         {
@@ -49,7 +58,8 @@
             users.david = {
               imports = home-manager-config.homeModuleList ++ [
                 home-manager-config.nixvimModule
-                ./home.nix
+                ./home
+                ./home/claude-code.nix
               ];
             };
             extraSpecialArgs = {
@@ -66,14 +76,20 @@
           specialArgs = { inherit inputs self; };
           modules = serverModules ++ [
             ./configuration.nix
+            ./secrets
             #disko.nixosModules.disko
             #../modules/docker.nix
             #../modules/k3s.nix
             #../modules/matomo.nix
             #../modules/nftables.nix
             #../modules/supabase-cli.nix
-            modules/tailscale.nix
+            ./modules/tailscale.nix
             #../weatherspork
+            {
+              environment.systemPackages = [
+                claude-code
+              ];
+            }
           ];
         };
       };
@@ -83,7 +99,8 @@
         pkgs = nixpkgs.legacyPackages.aarch64-linux;
         modules = home-manager-config.homeModuleList ++ [
           home-manager-config.nixvimModule
-          ./home.nix
+          ./home
+          ./home/claude-code.nix
         ];
         extraSpecialArgs = {
           username = "david";

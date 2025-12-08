@@ -40,6 +40,8 @@
   environment.systemPackages = with pkgs; [
     gh
     devenv
+    nodejs_24
+    claude-monitor
     # nixd
     # deadnix
     # statix
