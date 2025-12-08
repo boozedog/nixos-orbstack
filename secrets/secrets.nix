@@ -6,4 +6,5 @@ let
 in
 {
   "brave-api-key.age".publicKeys = [ david ];
+  "ref-api-key.age".publicKeys = [ david ];
 }

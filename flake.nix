@@ -88,6 +88,7 @@
             {
               environment.systemPackages = [
                 claude-code
+                agenix.packages.${system}.default
               ];
             }
           ];
