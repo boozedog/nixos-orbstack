@@ -7,7 +7,6 @@
   "settings": {
     "[nix]": {
       "editor.defaultFormatter": "jnoortheen.nix-ide",
-      "editor.formatOnSave": true
     },
     "nix.enableLanguageServer": true,
     "nix.serverPath": "nil",
