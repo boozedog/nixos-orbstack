@@ -82,6 +82,7 @@
             #../modules/k3s.nix
             #../modules/matomo.nix
             #../modules/nftables.nix
+            ./modules/openvscode-server.nix
             #../modules/supabase-cli.nix
             ./modules/tailscale.nix
             #../weatherspork
