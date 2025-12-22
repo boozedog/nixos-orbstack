@@ -8,7 +8,6 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
 
-    agenix.url = "github:ryantm/agenix";
     vscode-server = {
       url = "github:nix-community/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -27,7 +26,6 @@
       self,
       nixpkgs,
       srvos,
-      agenix,
       #dev-tools,
       vscode-server,
       home-manager,
@@ -48,7 +46,6 @@
       serverModules = [
         srvos.nixosModules.server
         srvos.nixosModules.mixins-terminfo
-        agenix.nixosModules.default
         vscode-server.nixosModules.default
         home-manager.nixosModules.home-manager
         {
@@ -76,7 +73,6 @@
           specialArgs = { inherit inputs self; };
           modules = serverModules ++ [
             ./configuration.nix
-            ./secrets
             #disko.nixosModules.disko
             #../modules/docker.nix
             #../modules/k3s.nix
@@ -89,7 +85,6 @@
             {
               environment.systemPackages = [
                 claude-code
-                agenix.packages.${system}.default
               ];
             }
           ];

@@ -31,7 +31,7 @@
     createHome = true;
     home = "/home/david";
     homeMode = "700";
-    useDefaultShell = true;
+    shell = pkgs.fish;
   };
 
   security.sudo.wheelNeedsPassword = false;
@@ -50,8 +50,11 @@
 
   # VSCode Server support for Remote SSH
   services.vscode-server.enable = true;
-  programs.nix-ld.enable = true;
-  programs.direnv.enable = true;
+  programs = {
+    nix-ld.enable = true;
+    direnv.enable = true;
+    fish.enable = true;
+  };
 
   # This being `true` leads to a few nasty bugs, change at your own risk!
   users.mutableUsers = false;
