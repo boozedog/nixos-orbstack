@@ -6,19 +6,19 @@
   lib,
   stdenv,
   fetchurl,
-  nodejs_22,
+  nodejs_24,
   cacert,
   bash,
 }:
 
 let
-  version = "2.1.32";
+  version = "2.1.33";
 
   # Pre-fetch the npm package as a Fixed Output Derivation
   # To update: nix-prefetch-url https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-VERSION.tgz
   claudeCodeTarball = fetchurl {
     url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
-    sha256 = "sha256-qMCPsYVxWnn46Hah9Qd+rSN6eOQ/8Qafd35IfHkLAe0=";
+    sha256 = "sha256-+aiNoLcUs3Lv1n01rJ47ZXS1QYwy2g/Nv0krKNWSEFQ=";
   };
 in
 stdenv.mkDerivation {
@@ -28,7 +28,7 @@ stdenv.mkDerivation {
   dontUnpack = true;
 
   nativeBuildInputs = [
-    nodejs_22
+    nodejs_24
     cacert
   ];
 
@@ -39,9 +39,9 @@ stdenv.mkDerivation {
     export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
     export NODE_EXTRA_CA_CERTS=$SSL_CERT_FILE
 
-    ${nodejs_22}/bin/npm config set cafile $SSL_CERT_FILE
-    ${nodejs_22}/bin/npm config set offline true
-    ${nodejs_22}/bin/npm install -g --prefix=$out ${claudeCodeTarball}
+    ${nodejs_24}/bin/npm config set cafile $SSL_CERT_FILE
+    ${nodejs_24}/bin/npm config set offline true
+    ${nodejs_24}/bin/npm install -g --prefix=$out ${claudeCodeTarball}
   '';
 
   installPhase = ''
@@ -54,7 +54,7 @@ stdenv.mkDerivation {
     export CLAUDE_EXECUTABLE_PATH="$HOME/.local/bin/claude"
     export DISABLE_AUTOUPDATER=1
 
-    exec ${nodejs_22}/bin/node --no-warnings --enable-source-maps "@out@/lib/node_modules/@anthropic-ai/claude-code/cli.js" "$@"
+    exec ${nodejs_24}/bin/node --no-warnings --enable-source-maps "@out@/lib/node_modules/@anthropic-ai/claude-code/cli.js" "$@"
     EOF
         chmod +x $out/bin/claude
 
