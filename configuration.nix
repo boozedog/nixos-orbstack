@@ -38,6 +38,7 @@
 
   # System packages
   environment.systemPackages = with pkgs; [
+    ghostty.terminfo
     gh
     devenv
     nodejs_24

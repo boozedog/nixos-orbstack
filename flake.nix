@@ -57,6 +57,7 @@
                 home-manager-config.nixvimModule
                 ./home
                 ./home/claude-code.nix
+                ./home/zellij.nix
               ];
             };
             extraSpecialArgs = {
@@ -98,6 +99,7 @@
           home-manager-config.nixvimModule
           ./home
           ./home/claude-code.nix
+          ./home/zellij.nix
         ];
         extraSpecialArgs = {
           username = "david";
