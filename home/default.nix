@@ -10,6 +10,9 @@
           name = "boozedog";
           email = "code@booze.dog";
         };
+        "credential \"https://gitea.tail9fdd65.ts.net\"" = {
+          helper = "!tea login helper get";
+        };
       };
     };
 

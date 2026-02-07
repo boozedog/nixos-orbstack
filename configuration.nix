@@ -43,6 +43,7 @@
     devenv
     nodejs_24
     claude-monitor
+    tea
     # nixd
     # deadnix
     # statix

@@ -21,9 +21,9 @@ in
 
     # Settings go in .claude/settings.json (plugins, preferences)
     file.".claude/settings.json".text = builtins.toJSON {
-      enabledPlugins = {
-        "frontend-design@claude-code-plugins" = true;
-      };
+      # enabledPlugins = {
+      #   "frontend-design@claude-code-plugins" = true;
+      # };
       alwaysThinkingEnabled = true;
       statusLine = {
         type = "command";
