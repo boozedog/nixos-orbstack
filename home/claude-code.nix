@@ -11,6 +11,10 @@ let
         ];
         env = { };
       };
+      nixos = {
+        command = "uvx";
+        args = [ "mcp-nixos" ];
+      };
     };
   };
 in
