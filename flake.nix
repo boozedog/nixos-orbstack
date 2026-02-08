@@ -20,6 +20,10 @@
       url = "github:boozedog/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs@{
@@ -30,6 +34,7 @@
       vscode-server,
       home-manager,
       home-manager-config,
+      agenix,
       ...
     }:
     let
@@ -47,6 +52,7 @@
         srvos.nixosModules.server
         srvos.nixosModules.mixins-terminfo
         vscode-server.nixosModules.default
+        agenix.nixosModules.default
         home-manager.nixosModules.home-manager
         {
           home-manager = {
@@ -85,6 +91,7 @@
             #../weatherspork
             {
               environment.systemPackages = [
+                agenix.packages.${system}.default
                 claude-code
               ];
             }
