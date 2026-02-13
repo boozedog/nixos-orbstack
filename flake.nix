@@ -48,6 +48,7 @@
       # Local packages
       claude-code = pkgs.callPackage ./packages/claude-code.nix { };
       sidecar = pkgs.callPackage ./packages/sidecar.nix { };
+      td = pkgs.callPackage ./packages/td.nix { };
 
       serverModules = [
         srvos.nixosModules.server
@@ -95,6 +96,7 @@
                 agenix.packages.${system}.default
                 claude-code
                 sidecar
+                td
               ];
             }
           ];
