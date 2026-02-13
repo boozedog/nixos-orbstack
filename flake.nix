@@ -61,10 +61,12 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             users.david = {
-              imports = home-manager-config.homeModuleList ++ [
-                home-manager-config.nixvimModule
+              imports = [
+                home-manager-config.homeModules.default
+                home-manager-config.homeModules.shells
                 ./home
                 ./home/claude-code.nix
+                ./home/lazyvim.nix
                 ./home/zellij.nix
               ];
             };
@@ -106,10 +108,12 @@
       # Standalone home-manager configuration
       homeConfigurations.david = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.aarch64-linux;
-        modules = home-manager-config.homeModuleList ++ [
-          home-manager-config.nixvimModule
+        modules = [
+          home-manager-config.homeModules.default
+          home-manager-config.homeModules.shells
           ./home
           ./home/claude-code.nix
+          ./home/lazyvim.nix
           ./home/zellij.nix
         ];
         extraSpecialArgs = {
