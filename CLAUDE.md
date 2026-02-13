@@ -1,5 +1,11 @@
 # CLAUDE.md
 
+## MANDATORY: Use td for Task Management
+
+You must run td usage --new-session at conversation start
+  (or after /clear) to see current work.
+Use td usage -q for subsequent reads.
+
 - for any web search, use the brave-search mcp
 - for any interaction with github, use github mcp
   - use github mcp in read-only fashion unless explicitly authorized
