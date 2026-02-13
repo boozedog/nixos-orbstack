@@ -71,6 +71,7 @@
                 ./home
                 ./home/claude-code.nix
                 ./home/lazyvim.nix
+                ./home/mise.nix
                 ./home/zellij.nix
               ];
             };
@@ -80,8 +81,49 @@
           };
         }
       ];
+      eachSystem = nixpkgs.lib.genAttrs [
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
     in
     {
+      packages = eachSystem (
+        sys:
+        let
+          sysPkgs = import nixpkgs {
+            system = sys;
+          };
+        in
+        {
+          claude-code-docker = sysPkgs.dockerTools.buildLayeredImage {
+            name = "claude-code";
+            tag = "latest";
+            contents = [
+              claude-code.packages.${sys}.default
+              sysPkgs.bashInteractive
+              sysPkgs.cacert
+              sysPkgs.coreutils
+              sysPkgs.git
+              (sysPkgs.writeTextDir "etc/passwd" "root:x:0:0:root:/root:/bin/bash\nclaude:x:1000:1000:claude:/home/claude:/bin/bash\n")
+              (sysPkgs.writeTextDir "etc/group" "root:x:0:\nclaude:x:1000:\n")
+            ];
+            fakeRootCommands = ''
+              mkdir -p tmp home/claude
+              chmod 1777 tmp
+              chown 1000:1000 home/claude
+            '';
+            config = {
+              User = "claude";
+              Entrypoint = [ "claude" ];
+              Env = [
+                "HOME=/home/claude"
+                "SSL_CERT_FILE=${sysPkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
+              ];
+            };
+          };
+        }
+      );
+
       nixosConfigurations = {
         orbstack = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
@@ -118,6 +160,7 @@
           ./home
           ./home/claude-code.nix
           ./home/lazyvim.nix
+          ./home/mise.nix
           ./home/zellij.nix
         ];
         extraSpecialArgs = {
