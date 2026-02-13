@@ -6,12 +6,7 @@ You must run td usage --new-session at conversation start
   (or after /clear) to see current work.
 Use td usage -q for subsequent reads.
 
-- for any web search, use the brave-search mcp
-- for any interaction with github, use github mcp
-  - use github mcp in read-only fashion unless explicitly authorized
-- after editing a nix file
-  - first run nixfmt, statix, and deadnix and correct any issues
-  - once those are clean, then run nix flake check
-- always correct any lsp generated warnings you encounter
-- note that we are using nixd 2.x which does not support .nixd.json
-  - nixd is configured in nix-infra.code-workspace
+## linting and formatting
+
+- after you are finished making changes to files in this folder,
+  stage changed files first, then run `Bash(.git/hooks/pre-commit 2>&1)`

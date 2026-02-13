@@ -100,10 +100,15 @@
             tag = "latest";
             contents = [
               claude-code.packages.${sys}.default
+              (sysPkgs.callPackage ./packages/sidecar.nix { })
+              (sysPkgs.callPackage ./packages/td.nix { })
               sysPkgs.bashInteractive
               sysPkgs.cacert
               sysPkgs.coreutils
               sysPkgs.git
+              sysPkgs.ghostty.terminfo
+              sysPkgs.ncurses
+              sysPkgs.tmux
               (sysPkgs.writeTextDir "etc/passwd" "root:x:0:0:root:/root:/bin/bash\nclaude:x:1000:1000:claude:/home/claude:/bin/bash\n")
               (sysPkgs.writeTextDir "etc/group" "root:x:0:\nclaude:x:1000:\n")
             ];
@@ -114,10 +119,12 @@
             '';
             config = {
               User = "claude";
-              Entrypoint = [ "claude" ];
+              Entrypoint = [ "sidecar" ];
               Env = [
                 "HOME=/home/claude"
                 "SSL_CERT_FILE=${sysPkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
+                "COLORTERM=truecolor"
+                "TERMINFO_DIRS=${sysPkgs.ghostty.terminfo}/share/terminfo:${sysPkgs.ncurses}/share/terminfo"
               ];
             };
           };
