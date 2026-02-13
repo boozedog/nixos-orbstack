@@ -24,6 +24,10 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    claude-code = {
+      url = "github:sadjow/claude-code-nix?ref=v2";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs@{
@@ -35,6 +39,7 @@
       home-manager,
       home-manager-config,
       agenix,
+      claude-code,
       ...
     }:
     let
@@ -46,7 +51,6 @@
       };
 
       # Local packages
-      claude-code = pkgs.callPackage ./packages/claude-code.nix { };
       sidecar = pkgs.callPackage ./packages/sidecar.nix { };
       td = pkgs.callPackage ./packages/td.nix { };
 
@@ -96,7 +100,7 @@
             {
               environment.systemPackages = [
                 agenix.packages.${system}.default
-                claude-code
+                claude-code.packages.${system}.default
                 sidecar
                 td
               ];
