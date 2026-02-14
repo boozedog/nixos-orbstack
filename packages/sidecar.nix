@@ -5,12 +5,12 @@
 
 buildGoModule rec {
   pname = "sidecar";
-  version = "0-unstable-2025-02-12";
+  version = "0.71.1-23-g998cbea"; # git describe --tags --always 998cbea
 
   src = fetchFromGitHub {
     owner = "boozedog";
     repo = "sidecar";
-    rev = "ba7af53a1fca3b3dc298b58e757c3d27e2961ddc"; # develop branch
+    rev = "998cbea0f7acbcbc73438bb2582821e0d48a9786"; # develop branch
     hash = "sha256-u0TaoNjCMJnehYpNnT/EWMZY7A0q49wqQalDhrJLGuM=";
   };
 

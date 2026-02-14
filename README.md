@@ -15,6 +15,22 @@ nix flake check
 sudo nixos-rebuild switch --no-reexec --use-substitutes --flake .
 ```
 
+## update sidecar
+
+```sh
+# bump to latest develop branch commit
+./scripts/update-sidecar.sh
+
+# or pin a specific commit
+./scripts/update-sidecar.sh <commit-sha>
+
+# then rebuild
+sudo nixos-rebuild switch --no-reexec --use-substitutes --flake .
+```
+
+If the build fails with a vendorHash mismatch, copy the expected hash from
+the error and replace `vendorHash` in `packages/sidecar.nix`, then rebuild.
+
 ## build (non-flake)
 
 ```sh
