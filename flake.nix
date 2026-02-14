@@ -95,39 +95,89 @@
           };
         in
         {
-          claude-code-docker = sysPkgs.dockerTools.buildLayeredImage {
-            name = "claude-code";
-            tag = "latest";
-            contents = [
-              claude-code.packages.${sys}.default
-              (sysPkgs.callPackage ./packages/sidecar.nix { })
-              (sysPkgs.callPackage ./packages/td.nix { })
-              sysPkgs.bashInteractive
-              sysPkgs.cacert
-              sysPkgs.coreutils
-              sysPkgs.git
-              sysPkgs.ghostty.terminfo
-              sysPkgs.ncurses
-              sysPkgs.tmux
-              (sysPkgs.writeTextDir "etc/passwd" "root:x:0:0:root:/root:/bin/bash\nclaude:x:1000:1000:claude:/home/claude:/bin/bash\n")
-              (sysPkgs.writeTextDir "etc/group" "root:x:0:\nclaude:x:1000:\n")
-            ];
-            fakeRootCommands = ''
-              mkdir -p tmp home/claude
-              chmod 1777 tmp
-              chown 1000:1000 home/claude
-            '';
-            config = {
-              User = "claude";
-              Entrypoint = [ "sidecar" ];
-              Env = [
-                "HOME=/home/claude"
-                "SSL_CERT_FILE=${sysPkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
-                "COLORTERM=truecolor"
-                "TERMINFO_DIRS=${sysPkgs.ghostty.terminfo}/share/terminfo:${sysPkgs.ncurses}/share/terminfo"
+          claude-code-docker =
+            let
+              nvimConfig = sysPkgs.runCommand "nvim-config" { } ''
+                mkdir -p $out/nvim/lua/{config,plugins}
+                cp ${./home/lazyvim/init.lua} $out/nvim/init.lua
+                cp ${./home/lazyvim/lua/config/lazy.lua} $out/nvim/lua/config/lazy.lua
+                cp ${./home/lazyvim/lua/config/options.lua} $out/nvim/lua/config/options.lua
+                cp ${./home/lazyvim/lua/config/keymaps.lua} $out/nvim/lua/config/keymaps.lua
+                cp ${./home/lazyvim/lua/config/autocmds.lua} $out/nvim/lua/config/autocmds.lua
+                cp ${./home/lazyvim/lua/plugins/colorscheme.lua} $out/nvim/lua/plugins/colorscheme.lua
+                cp ${./home/lazyvim/lua/plugins/mason.lua} $out/nvim/lua/plugins/mason.lua
+                cp ${./home/lazyvim/lua/plugins/lsp.lua} $out/nvim/lua/plugins/lsp.lua
+                cp ${./home/lazyvim/lua/plugins/formatting.lua} $out/nvim/lua/plugins/formatting.lua
+                cp ${./home/lazyvim/lua/plugins/linting.lua} $out/nvim/lua/plugins/linting.lua
+              '';
+              entrypoint = sysPkgs.writeShellScriptBin "entrypoint" ''
+                if [ ! -f "$HOME/.config/nvim/init.lua" ]; then
+                  mkdir -p "$HOME/.config/nvim"
+                  cp -r ${nvimConfig}/nvim/* "$HOME/.config/nvim/"
+                fi
+                exec sidecar "$@"
+              '';
+            in
+            sysPkgs.dockerTools.buildLayeredImage {
+              name = "claude-code";
+              tag = "latest";
+              maxLayers = 2;
+              contents = [
+                claude-code.packages.${sys}.default
+                (sysPkgs.callPackage ./packages/sidecar.nix { })
+                (sysPkgs.callPackage ./packages/td.nix { })
+                sysPkgs.bashInteractive
+                sysPkgs.cacert
+                sysPkgs.coreutils
+                sysPkgs.curl
+                sysPkgs.gnutar
+                sysPkgs.gzip
+                sysPkgs.git
+                sysPkgs.ncurses
+                sysPkgs.tmux
+
+                # Neovim + LazyVim
+                (sysPkgs.neovim.override {
+                  viAlias = true;
+                  vimAlias = true;
+                })
+                entrypoint
+                # Build tools for treesitter
+                sysPkgs.gcc
+                sysPkgs.gnumake
+                sysPkgs.tree-sitter
+                # LazyVim tools
+                sysPkgs.ripgrep
+                sysPkgs.fd
+                sysPkgs.lazygit
+                sysPkgs.nodejs
+                # LSP servers
+                sysPkgs.nixd
+                sysPkgs.lua-language-server
+                sysPkgs.bash-language-server
+                # Formatters / linters
+                sysPkgs.nixfmt-rfc-style
+                sysPkgs.statix
+
+                (sysPkgs.writeTextDir "etc/passwd" "root:x:0:0:root:/root:/bin/bash\nclaude:x:1000:1000:claude:/home/claude:/bin/bash\n")
+                (sysPkgs.writeTextDir "etc/group" "root:x:0:\nclaude:x:1000:\n")
               ];
+              fakeRootCommands = ''
+                mkdir -p tmp home/claude
+                chmod 1777 tmp
+                chown -R 1000:1000 home/claude
+              '';
+              config = {
+                User = "claude";
+                Entrypoint = [ "entrypoint" ];
+                Env = [
+                  "HOME=/home/claude"
+                  "SSL_CERT_FILE=${sysPkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
+                  "COLORTERM=truecolor"
+                  "TERMINFO_DIRS=${sysPkgs.ncurses}/share/terminfo"
+                ];
+              };
             };
-          };
         }
       );
 
