@@ -53,6 +53,7 @@
       # Local packages
       sidecar = pkgs.callPackage ./packages/sidecar.nix { };
       td = pkgs.callPackage ./packages/td.nix { };
+      pi = pkgs.callPackage ./packages/pi.nix { };
 
       serverModules = [
         srvos.nixosModules.server
@@ -126,6 +127,7 @@
                 claude-code.packages.${sys}.default
                 (sysPkgs.callPackage ./packages/sidecar.nix { })
                 (sysPkgs.callPackage ./packages/td.nix { })
+                (sysPkgs.callPackage ./packages/pi.nix { })
                 sysPkgs.bashInteractive
                 sysPkgs.cacert
                 sysPkgs.coreutils
@@ -156,7 +158,7 @@
                 sysPkgs.lua-language-server
                 sysPkgs.bash-language-server
                 # Formatters / linters
-                sysPkgs.nixfmt-rfc-style
+                sysPkgs.nixfmt
                 sysPkgs.statix
 
                 (sysPkgs.writeTextDir "etc/passwd" "root:x:0:0:root:/root:/bin/bash\nclaude:x:1000:1000:claude:/home/claude:/bin/bash\n")
@@ -202,6 +204,7 @@
                 claude-code.packages.${system}.default
                 sidecar
                 td
+                pi
               ];
             }
           ];

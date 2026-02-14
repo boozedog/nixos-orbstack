@@ -10,8 +10,8 @@ buildGoModule rec {
   src = fetchFromGitHub {
     owner = "boozedog";
     repo = "sidecar";
-    rev = "d276109a5b74aafe46ce1e74c4e4880d9b07a8aa";
-    hash = "sha256-x37sZdz0Vuhm9nN68xg61ahYY4WTAH18tKomQC7cYyE=";
+    rev = "ba7af53a1fca3b3dc298b58e757c3d27e2961ddc"; # develop branch
+    hash = "sha256-u0TaoNjCMJnehYpNnT/EWMZY7A0q49wqQalDhrJLGuM=";
   };
 
   vendorHash = "sha256-R/AjNJ4x4t1zXXzT+21cjY+9pxs4DVXU4xs88BQvHx4=";
