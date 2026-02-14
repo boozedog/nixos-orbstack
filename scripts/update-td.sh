@@ -1,27 +1,25 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Updates packages/sidecar.nix with the latest develop branch commit
+# Updates packages/td.nix with the latest commit from marcus/td
 # and a proper git-describe-style version string.
 #
-# Usage: ./scripts/update-sidecar.sh [COMMIT_SHA]
-#   If no commit is given, uses the latest commit on boozedog/sidecar develop.
+# Usage: ./scripts/update-td.sh [COMMIT_SHA]
+#   If no commit is given, uses the latest commit on marcus/td main.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-NIX_FILE="$SCRIPT_DIR/../packages/sidecar.nix"
+NIX_FILE="$SCRIPT_DIR/../packages/td.nix"
 
-FORK_OWNER="boozedog"
-FORK_REPO="sidecar"
-UPSTREAM_OWNER="marcus"
-UPSTREAM_REPO="sidecar"
-BRANCH="develop"
+OWNER="marcus"
+REPO="td"
+BRANCH="main"
 
 # 1. Resolve target commit
 if [[ ${1:-} ]]; then
   COMMIT="$1"
   echo "Using provided commit: $COMMIT"
 else
-  COMMIT=$(gh api "repos/$FORK_OWNER/$FORK_REPO/branches/$BRANCH" --jq '.commit.sha')
+  COMMIT=$(gh api "repos/$OWNER/$REPO/commits/$BRANCH" --jq '.sha')
   echo "Latest $BRANCH commit: $COMMIT"
 fi
 SHORT_SHA=${COMMIT:0:7}
@@ -33,17 +31,16 @@ if [[ "$CURRENT_REV" == "$COMMIT" ]]; then
   exit 0
 fi
 
-# 3. Find the latest upstream tag that's an ancestor of this commit.
-#    Fetch tags sorted by version (newest first), then check ancestry.
-echo "Finding latest ancestor tag from $UPSTREAM_OWNER/$UPSTREAM_REPO..."
+# 3. Find the latest tag that's an ancestor of this commit.
+echo "Finding latest ancestor tag..."
 
-TAGS=$(gh api "repos/$UPSTREAM_OWNER/$UPSTREAM_REPO/tags" --paginate --jq '.[].name' | sort -rV)
+TAGS=$(gh api "repos/$OWNER/$REPO/tags" --paginate --jq '.[].name' | sort -rV)
 
 BEST_TAG=""
 AHEAD_BY=0
 
 for tag in $TAGS; do
-  result=$(gh api "repos/$UPSTREAM_OWNER/$UPSTREAM_REPO/compare/$tag...$COMMIT" \
+  result=$(gh api "repos/$OWNER/$REPO/compare/$tag...$COMMIT" \
     --jq '{ahead_by, behind_by}' 2>/dev/null) || continue
 
   behind=$(echo "$result" | jq -r '.behind_by')
@@ -75,28 +72,28 @@ echo "Version: $VERSION"
 # 5. Prefetch source hash
 echo "Prefetching source hash..."
 SRC_HASH=$(nix-prefetch-url --unpack --type sha256 \
-  "https://github.com/$FORK_OWNER/$FORK_REPO/archive/$COMMIT.tar.gz" 2>/dev/null)
+  "https://github.com/$OWNER/$REPO/archive/$COMMIT.tar.gz" 2>/dev/null)
 SRI_HASH=$(nix hash convert --hash-algo sha256 --to sri "$SRC_HASH")
 echo "Source hash: $SRI_HASH"
 
-# 6. Update sidecar.nix
+# 6. Update td.nix
 echo "Updating $NIX_FILE..."
 
 # Update version
-sed -i "s|version = \".*\";.*|version = \"$VERSION\"; # git describe --tags --always $SHORT_SHA|" "$NIX_FILE"
+sed -i "s|version = \".*\";|version = \"$VERSION\";|" "$NIX_FILE"
 
 # Update rev
-sed -i "s|rev = \".*\";.*|rev = \"$COMMIT\"; # $BRANCH branch|" "$NIX_FILE"
+sed -i "s|rev = \".*\";|rev = \"$COMMIT\";|" "$NIX_FILE"
 
 # Update source hash
 sed -i "s|hash = \"sha256-.*\";|hash = \"$SRI_HASH\";|" "$NIX_FILE"
 
 echo ""
-echo "Updated sidecar.nix:"
+echo "Updated td.nix:"
 echo "  version: $VERSION"
 echo "  rev:     $COMMIT"
 echo "  hash:    $SRI_HASH"
 echo ""
 echo "NOTE: If Go dependencies changed, vendorHash may need updating."
-echo "      Build with 'nix build .#sidecar' — if it fails with a hash"
+echo "      Build with 'nix build .#td' — if it fails with a hash"
 echo "      mismatch, replace vendorHash with the expected hash from the error."

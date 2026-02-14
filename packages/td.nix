@@ -5,7 +5,7 @@
 
 buildGoModule rec {
   pname = "td";
-  version = "0-unstable-2025-02-12";
+  version = "0.34.0-4-g1653f43";
 
   src = fetchFromGitHub {
     owner = "marcus";

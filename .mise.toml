@@ -1,3 +1,33 @@
+[tasks."update:td"]
+description = "Update td to latest commit"
+run = "scripts/update-td.sh"
+
+[tasks."update:sidecar"]
+description = "Update sidecar to latest commit"
+run = "scripts/update-sidecar.sh"
+
+[tasks."update:all"]
+description = "Update all packages and rebuild NixOS"
+run = """
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "=== Updating flake inputs ==="
+nix flake update
+
+echo ""
+echo "=== Updating td ==="
+scripts/update-td.sh
+
+echo ""
+echo "=== Updating sidecar ==="
+scripts/update-sidecar.sh
+
+echo ""
+echo "=== Rebuilding NixOS ==="
+sudo nixos-rebuild switch --no-reexec --use-substitutes --flake .
+"""
+
 [tasks."docker:build"]
 description = "Build claude-code docker image and copy to macOS host"
 run = "scripts/claude-code-docker.sh build"
