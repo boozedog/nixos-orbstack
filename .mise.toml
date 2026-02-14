@@ -31,8 +31,3 @@ sudo nixos-rebuild switch --no-reexec --use-substitutes --flake .
 [tasks."docker:build"]
 description = "Build claude-code docker image and copy to macOS host"
 run = "scripts/claude-code-docker.sh build"
-
-[tasks."docker:run"]
-description = "Load image and run claude-code in Docker"
-raw = true
-run = "scripts/claude-code-docker.sh run"
