@@ -44,6 +44,8 @@
     nodejs_24
     claude-monitor
     tea
+    fd
+    ripgrep
     # nixd
     # deadnix
     # statix
