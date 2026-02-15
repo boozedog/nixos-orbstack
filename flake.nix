@@ -28,6 +28,10 @@
       url = "github:sadjow/claude-code-nix?ref=v2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sidecar = {
+      url = "github:boozedog/sidecar/develop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs@{
@@ -51,7 +55,7 @@
       };
 
       # Local packages
-      sidecar = pkgs.callPackage ./packages/sidecar.nix { };
+      sidecar = inputs.sidecar.packages.${system}.default;
       td = pkgs.callPackage ./packages/td.nix { };
       pi = pkgs.callPackage ./packages/pi.nix { };
 
@@ -125,7 +129,7 @@
               maxLayers = 2;
               contents = [
                 claude-code.packages.${sys}.default
-                (sysPkgs.callPackage ./packages/sidecar.nix { })
+                inputs.sidecar.packages.${sys}.default
                 (sysPkgs.callPackage ./packages/td.nix { })
                 (sysPkgs.callPackage ./packages/pi.nix { })
                 sysPkgs.bashInteractive

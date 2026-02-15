@@ -21,17 +21,18 @@ sudo nixos-rebuild switch --no-reexec --use-substitutes --flake .
 # update all packages and rebuild NixOS
 mise run update:all
 
-# update individual packages
+# update td individually
 mise run update:td
-mise run update:sidecar
 
-# pin a specific commit
+# pin td to a specific commit
 ./scripts/update-td.sh <commit-sha>
-./scripts/update-sidecar.sh <commit-sha>
+
+# update sidecar (fetched as a flake input)
+nix flake update sidecar
 ```
 
 If a build fails with a vendorHash mismatch, copy the expected hash from
-the error and replace `vendorHash` in the relevant `packages/*.nix` file, then rebuild.
+the error and replace `vendorHash` in `packages/td.nix`, then rebuild.
 
 ## build (non-flake)
 

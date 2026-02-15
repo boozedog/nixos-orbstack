@@ -2,10 +2,6 @@
 description = "Update td to latest commit"
 run = "scripts/update-td.sh"
 
-[tasks."update:sidecar"]
-description = "Update sidecar to latest commit"
-run = "scripts/update-sidecar.sh"
-
 [tasks."update:all"]
 description = "Update all packages and rebuild NixOS"
 run = """
@@ -18,10 +14,6 @@ nix flake update
 echo ""
 echo "=== Updating td ==="
 scripts/update-td.sh
-
-echo ""
-echo "=== Updating sidecar ==="
-scripts/update-sidecar.sh
 
 echo ""
 echo "=== Rebuilding NixOS ==="
