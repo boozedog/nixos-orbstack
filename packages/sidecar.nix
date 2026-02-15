@@ -5,16 +5,16 @@
 
 buildGoModule rec {
   pname = "sidecar";
-  version = "0.71.1-23-g998cbea"; # git describe --tags --always 998cbea
+  version = "0.72.0-14-g490acf5"; # git describe --tags --always 490acf5
 
   src = fetchFromGitHub {
     owner = "boozedog";
     repo = "sidecar";
-    rev = "998cbea0f7acbcbc73438bb2582821e0d48a9786"; # develop branch
-    hash = "sha256-u0TaoNjCMJnehYpNnT/EWMZY7A0q49wqQalDhrJLGuM=";
+    rev = "490acf5356eb3ac786f359148d4583ac9e6f73a0"; # develop branch
+    hash = "sha256-9Q7KySa9rux6zykymd5yDhZk6hpvax6vMLZ771QOY70=";
   };
 
-  vendorHash = "sha256-R/AjNJ4x4t1zXXzT+21cjY+9pxs4DVXU4xs88BQvHx4=";
+  vendorHash = "sha256-E9SFghqsVxJO+fVoGWk36Qq+J64GVqUeAo66yPT1E/E=";
 
   subPackages = [ "cmd/sidecar" ];
 

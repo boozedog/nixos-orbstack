@@ -174,6 +174,7 @@
                 Entrypoint = [ "entrypoint" ];
                 Env = [
                   "HOME=/home/claude"
+                  "PATH=/bin"
                   "SSL_CERT_FILE=${sysPkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
                   "COLORTERM=truecolor"
                   "TERMINFO_DIRS=${sysPkgs.ncurses}/share/terminfo"

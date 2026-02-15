@@ -5,13 +5,13 @@
 
 buildGoModule rec {
   pname = "td";
-  version = "0.34.0-4-g1653f43";
+  version = "0.36.0";
 
   src = fetchFromGitHub {
     owner = "marcus";
     repo = "td";
-    rev = "1653f43e2c0a43382b7f1c7c3c4c5f392460c770";
-    hash = "sha256-0m7V3fjZ25W4LM1pML37yjaf3C8laW9tQ434sMdP1Kc=";
+    rev = "2dadd1b2996243c9827786dc6de6aeb36835d9d6";
+    hash = "sha256-r8jOoLkQrKvnItmTzKd/zd1xrT+xiSWGkpHUpeX9nyo=";
   };
 
   vendorHash = "sha256-Rp0lhnBLJx+exX7VLql3RfthTVk3LLftD6n6SsSWzVY=";
